@@ -13,6 +13,15 @@ function App() {
 
   console.log(dice);
 
+  useEffect(() => {
+    const allHeld = dice.every((die) => die.isHeld);
+    const firstValue = dice[0].value;
+    const allSameValue = dice.every((die) => die.value === firstValue);
+    if (allHeld && allSameValue) {
+      setTensizes(true);
+    }
+  }, [dice]);
+
   function generateNewDie() {
     return {
       value: Math.ceil(Math.random() * 6),
@@ -29,10 +38,37 @@ function App() {
     return newArr;
   }
 
-  const diceElements = dice.map((die) => <Die key={die.id} {...die} />);
+  function rollDice() {
+    if (!tenzies) {
+      setDice((oldDice) =>
+        oldDice.map((die) => {
+          return die.isHeld ? die : generateNewDie();
+        })
+      );
+    } else {
+      setTensizes(false);
+      setDice(allNewDice());
+    }
+  }
 
-  // TODO: install Confetti
-  // TODO: install nanoid()
+  function holdDice(id) {
+    setDice((oldDice) =>
+      oldDice.map((die) => {
+        return die.id === id ? { ...die, isHeld: !die.isHeld } : die;
+      })
+    );
+  }
+
+  const diceElements = dice.map((die) => (
+    <Die
+      key={die.id}
+      {...die}
+      value={die.value}
+      isHeld={die.isHeld}
+      holdDice={() => holdDice(die.id)}
+    />
+  ));
+
   // TODO: complete project
   // TODO: additional features
   // TODO: documentation
@@ -40,13 +76,16 @@ function App() {
   return (
     <div className="App">
       <main>
+        {tenzies && <Confetti />}
         <h1>Tenzies</h1>
         <p>
           Roll until all dice are the same. Click each die to freeze it at its
           current value between rolls.
         </p>
         <div className="die-container">{diceElements}</div>
-        <button className="roll-dice">Roll</button>
+        <button className="roll-dice" onClick={rollDice}>
+          {tenzies ? "New Game" : "Roll"}
+        </button>
       </main>
     </div>
   );
