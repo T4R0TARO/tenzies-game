@@ -2,6 +2,8 @@ import { useState } from "react";
 import { useEffect } from "react";
 import reactLogo from "./assets/react.svg";
 import viteLogo from "/vite.svg";
+import Confetti from "react-confetti";
+import { nanoid } from "nanoid";
 import Die from "./components/Die";
 import "./App.css";
 
@@ -11,24 +13,29 @@ function App() {
 
   console.log(dice);
 
-  function randomDieValue() {
-    return Math.ceil(Math.random() * 6);
+  function generateNewDie() {
+    return {
+      value: Math.ceil(Math.random() * 6),
+      held: false,
+      id: nanoid(),
+    };
   }
 
   function allNewDice() {
     const newArr = [];
     for (let i = 0; i < 10; i++) {
-      const newDie = {
-        value: randomDieValue(),
-        held: false,
-        id: i + 1,
-      };
-      newArr.push(newDie);
+      newArr.push(generateNewDie());
     }
     return newArr;
   }
 
   const diceElements = dice.map((die) => <Die key={die.id} {...die} />);
+
+  // TODO: install Confetti
+  // TODO: install nanoid()
+  // TODO: complete project
+  // TODO: additional features
+  // TODO: documentation
 
   return (
     <div className="App">
