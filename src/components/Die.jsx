@@ -6,8 +6,14 @@ function Die(props) {
   };
 
   return (
-    <div className="die-face" onClick={props.holdDice} style={styles}>
-      <h2 className="die-num">{props.value}</h2>
+    <div className="die-face-container" style={styles}>
+      <div
+        className="die-face"
+        onClick={props.holdDice}
+        data-number={props.value}
+      >
+        {/* <h2 className="die-num">{props.value}</h2> */}
+      </div>
     </div>
   );
 }

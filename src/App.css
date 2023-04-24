@@ -43,8 +43,17 @@ p {
   margin-bottom: 40px;
 }
 
+.die-face-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 6px;
+  border-radius: 10px;
+  width: 55px;
+}
+
 .die-face {
-  grid-row: span 1;
+  /* grid-row: span 1;
   border-radius: 10px;
   height: 50px;
   width: 50px;
@@ -52,12 +61,40 @@ p {
   justify-content: center;
   align-items: center;
   cursor: pointer;
+  box-shadow: 0px 3.57447px 3.57447px rgba(0, 0, 0, 0.1); */
+  position: relative;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  border-radius: 10px;
+  height: 50px;
+  width: 50px;
+  cursor: pointer;
   box-shadow: 0px 3.57447px 3.57447px rgba(0, 0, 0, 0.1);
 }
 
 .die-num {
   font-size: 2em;
   font-weight: lighter;
+}
+
+.die-face[data-number="1"] {
+  background-image: url(./images/Alea_1.png);
+}
+.die-face[data-number="2"] {
+  background-image: url(./images/Alea_2.png);
+}
+.die-face[data-number="3"] {
+  background-image: url(./images/Alea_3.png);
+}
+.die-face[data-number="4"] {
+  background-image: url(./images/Alea_4.png);
+}
+.die-face[data-number="5"] {
+  background-image: url(./images/Alea_5.png);
+}
+.die-face[data-number="6"] {
+  background-image: url(./images/Alea_6.png);
 }
 
 .roll-dice {
