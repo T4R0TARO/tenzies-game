@@ -10,7 +10,9 @@ import "./App.css";
 function App() {
   const [dice, setDice] = useState(allNewDice());
   const [tenzies, setTensizes] = useState(false);
+  const [reRollCounter, setReRollCounter] = useState(0);
 
+  console.log(reRollCounter);
   useEffect(() => {
     const allHeld = dice.every((die) => die.isHeld);
     const firstValue = dice[0].value;
@@ -23,7 +25,7 @@ function App() {
   function generateNewDie() {
     return {
       value: Math.ceil(Math.random() * 6),
-      held: false,
+      isHeld: false,
       id: nanoid(),
     };
   }
@@ -43,9 +45,11 @@ function App() {
           return die.isHeld ? die : generateNewDie();
         })
       );
+      setReRollCounter((prevReRollCounter) => prevReRollCounter + 1);
     } else {
       setTensizes(false);
       setDice(allNewDice());
+      setReRollCounter(0);
     }
   }
 
@@ -67,8 +71,12 @@ function App() {
     />
   ));
 
-  // TODO: complete project
   // TODO: additional features
+  // Change number value to Die image ✔
+  // Tracks number of clicks until player wins
+  // Track time passed in secs until player win
+  // Display a leader board for best time
+  // Create a Start Game page
   // TODO: documentation
 
   return (
@@ -84,6 +92,11 @@ function App() {
         <button className="roll-dice" onClick={rollDice}>
           {tenzies ? "New Game" : "Roll"}
         </button>
+        {/* When player wins */}
+        <div className="score-board-container">
+          <h3>Leaderboard</h3>
+          <h2>{reRollCounter}</h2>
+        </div>
       </main>
     </div>
   );
