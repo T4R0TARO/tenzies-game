@@ -11,8 +11,22 @@ function App() {
   const [dice, setDice] = useState(allNewDice());
   const [tenzies, setTensizes] = useState(false);
   const [reRollCounter, setReRollCounter] = useState(0);
+  const [timer, setTimer] = useState(0);
 
-  console.log(reRollCounter);
+  useEffect(() => {
+    // Timer
+    let intervalID = null;
+    if (!tenzies) {
+      intervalID = setInterval(() => {
+        setTimer((prevTimer) => prevTimer + 1);
+      }, 1000);
+    }
+    return () => {
+      clearInterval(intervalID);
+    };
+  }, [tenzies]);
+
+  console.log(timer);
   useEffect(() => {
     const allHeld = dice.every((die) => die.isHeld);
     const firstValue = dice[0].value;
@@ -50,6 +64,7 @@ function App() {
       setTensizes(false);
       setDice(allNewDice());
       setReRollCounter(0);
+      setTimer(0);
     }
   }
 
@@ -73,7 +88,7 @@ function App() {
 
   // TODO: additional features
   // Change number value to Die image ✔
-  // Tracks number of clicks until player wins
+  // Tracks number of clicks until player wins ✔
   // Track time passed in secs until player win
   // Display a leader board for best time
   // Create a Start Game page
@@ -96,6 +111,7 @@ function App() {
         <div className="score-board-container">
           <h3>Leaderboard</h3>
           <h2>{reRollCounter}</h2>
+          <p>{timer}</p>
         </div>
       </main>
     </div>
