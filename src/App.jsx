@@ -5,6 +5,7 @@ import viteLogo from "/vite.svg";
 import Confetti from "react-confetti";
 import { nanoid } from "nanoid";
 import Die from "./components/Die";
+import Score from "./components/Score";
 import "./App.css";
 
 function App() {
@@ -12,6 +13,7 @@ function App() {
   const [tenzies, setTensizes] = useState(false);
   const [reRollCounter, setReRollCounter] = useState(0);
   const [timer, setTimer] = useState(0);
+  const [scoreBoard, setScoreBoard] = useState([]);
 
   useEffect(() => {
     // Timer
@@ -44,6 +46,14 @@ function App() {
     };
   }
 
+  function createNewScore() {
+    const newScore = {
+      counter: reRollCounter,
+      time: timer,
+    };
+    return newScore;
+  }
+
   function allNewDice() {
     const newArr = [];
     for (let i = 0; i < 10; i++) {
@@ -65,6 +75,7 @@ function App() {
       setDice(allNewDice());
       setReRollCounter(0);
       setTimer(0);
+      setScoreBoard((prevScoreBoard) => [createNewScore(), ...prevScoreBoard]);
     }
   }
 
@@ -86,35 +97,47 @@ function App() {
     />
   ));
 
+  const scoreElements = scoreBoard
+    .sort((a, b) => a.time - b.time)
+    .map((score) => <Score key={nanoid()} {...score} />);
+
+  const topPlayer = scoreElements[0];
+
   // TODO: additional features
   // Change number value to Die image ✔
   // Tracks number of clicks until player wins ✔
-  // Track time passed in secs until player win
-  // Display a leader board for best time
+  // Track time passed in secs until player win ✔
+  // Display a leader board for best time ✔
   // Create a Start Game page
   // TODO: documentation
 
   return (
-    <div className="App">
-      <main>
-        {tenzies && <Confetti />}
-        <h1>Tenzies</h1>
-        <p>
-          Roll until all dice are the same. Click each die to freeze it at its
-          current value between rolls.
-        </p>
-        <div className="die-container">{diceElements}</div>
-        <button className="roll-dice" onClick={rollDice}>
-          {tenzies ? "New Game" : "Roll"}
-        </button>
-        {/* When player wins */}
+    <main>
+      {tenzies && <Confetti />}
+      <h1>Tenzies</h1>
+      <p>
+        Roll until all dice are the same. Click each die to freeze it at its
+        current value between rolls.
+      </p>
+      <div className="die-container">{diceElements}</div>
+      <button className="roll-dice" onClick={rollDice}>
+        {tenzies ? "New Game" : "Roll"}
+      </button>
+      {/* When player wins */}
+      <h3>{tenzies && `${reRollCounter} Rolls to Victory!`}</h3>
+      <p>
+        {tenzies && `TIME: `}
+        {timer}
+        {tenzies && ` seconds`}
+      </p>
+      {tenzies && (
         <div className="score-board-container">
           <h3>Leaderboard</h3>
-          <h2>{reRollCounter}</h2>
-          <p>{timer}</p>
+          <h2>👑 {topPlayer}</h2>
+          {scoreElements.length === 0 ? "NO RECORD" : scoreElements}
         </div>
-      </main>
-    </div>
+      )}
+    </main>
   );
 }
 
