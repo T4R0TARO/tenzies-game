@@ -14,11 +14,12 @@ function App() {
   const [reRollCounter, setReRollCounter] = useState(0);
   const [timer, setTimer] = useState(0);
   const [scoreBoard, setScoreBoard] = useState([]);
+  const [gameStart, setGameStart] = useState(false);
 
   useEffect(() => {
     // Timer
     let intervalID = null;
-    if (!tenzies) {
+    if (gameStart && !tenzies) {
       intervalID = setInterval(() => {
         setTimer((prevTimer) => prevTimer + 1);
       }, 1000);
@@ -26,7 +27,7 @@ function App() {
     return () => {
       clearInterval(intervalID);
     };
-  }, [tenzies]);
+  }, [gameStart, tenzies]);
 
   console.log(timer);
   useEffect(() => {
@@ -37,6 +38,14 @@ function App() {
       setTensizes(true);
     }
   }, [dice]);
+
+  function gameStartButton() {
+    setGameStart((prevGameStart) => {
+      return !prevGameStart;
+    });
+  }
+
+  console.log(gameStart);
 
   function generateNewDie() {
     return {
@@ -108,33 +117,48 @@ function App() {
   // Tracks number of clicks until player wins ✔
   // Track time passed in secs until player win ✔
   // Display a leader board for best time ✔
-  // Create a Start Game page
+  // Create a Start Game page ✔
+  // Save past scores to localStorage
   // TODO: documentation
 
   return (
     <main>
-      {tenzies && <Confetti />}
-      <h1>Tenzies</h1>
-      <p>
-        Roll until all dice are the same. Click each die to freeze it at its
-        current value between rolls.
-      </p>
-      <div className="die-container">{diceElements}</div>
-      <button className="roll-dice" onClick={rollDice}>
-        {tenzies ? "New Game" : "Roll"}
-      </button>
-      {/* When player wins */}
-      <h3>{tenzies && `${reRollCounter} Rolls to Victory!`}</h3>
-      <p>
-        {tenzies && `TIME: `}
-        {timer}
-        {tenzies && ` seconds`}
-      </p>
-      {tenzies && (
-        <div className="score-board-container">
-          <h3>Leaderboard</h3>
-          <h2>👑 {topPlayer}</h2>
-          {scoreElements.length === 0 ? "NO RECORD" : scoreElements}
+      {/* When game starts render Game */}
+      {gameStart ? (
+        <div className="game-container">
+          {tenzies && <Confetti />}
+          <h1>Tenzies</h1>
+          <p>
+            Roll until all dice are the same. Click each die to freeze it at its
+            current value between rolls.
+          </p>
+          <div className="die-container">{diceElements}</div>
+          <button className="roll-dice" onClick={rollDice}>
+            {tenzies ? "New Game" : "Roll"}
+          </button>
+          {/* When player wins display leaderboard */}
+          <h3>{tenzies && `${reRollCounter} Rolls to Victory!`}</h3>
+          <p>
+            {tenzies && `TIME: `}
+            {timer}
+            {tenzies && ` seconds`}
+          </p>
+          {tenzies && (
+            <div className="score-board-container">
+              <h3>Leaderboard</h3>
+              <h2>👑 {topPlayer}</h2>
+              {scoreElements.length === 0 ? "NO RECORD" : scoreElements}
+            </div>
+          )}
+        </div>
+      ) : (
+        // Start Game Page
+        <div className="starting-page-container">
+          <h1>Tenzies</h1>
+          <h2>🎲</h2>
+          <button className="start-game" onClick={gameStartButton}>
+            Start Game
+          </button>
         </div>
       )}
     </main>

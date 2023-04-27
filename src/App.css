@@ -6,19 +6,11 @@
 }
 
 main {
-  /* height: 400px; */
-  max-width: 800px;
+  min-width: 400px;
   background-color: whitesmoke;
   padding: 1rem;
   margin-inline: auto;
   border-radius: 5px;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-evenly;
-  align-items: center;
-}
-
-main {
   display: flex;
   flex-direction: column;
   justify-content: space-evenly;
@@ -37,6 +29,25 @@ p {
   margin-top: 0;
 }
 
+.starting-page-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 400px;
+  flex-direction: column;
+  padding: 30px;
+}
+
+.starting-page-container h1 {
+  font-size: 60px;
+  margin-bottom: 5px;
+}
+
+.starting-page-container h2 {
+  font-size: 70px;
+  margin-bottom: 20px;
+}
+
 .die-container {
   display: grid;
   grid-template: auto auto/ repeat(5, 1fr);
@@ -51,18 +62,10 @@ p {
   padding: 6px;
   border-radius: 10px;
   width: 55px;
+  margin: 0 auto;
 }
 
 .die-face {
-  /* grid-row: span 1;
-  border-radius: 10px;
-  height: 50px;
-  width: 50px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  cursor: pointer;
-  box-shadow: 0px 3.57447px 3.57447px rgba(0, 0, 0, 0.1); */
   position: relative;
   background-repeat: no-repeat;
   background-size: cover;
@@ -98,7 +101,8 @@ p {
   background-image: url(./images/Alea_6.png);
 }
 
-.roll-dice {
+.roll-dice,
+.start-game {
   height: 50px;
   width: 100px;
   border: none;
