@@ -1,7 +1,5 @@
 import { useState } from "react";
 import { useEffect } from "react";
-import reactLogo from "./assets/react.svg";
-import viteLogo from "/vite.svg";
 import Confetti from "react-confetti";
 import { nanoid } from "nanoid";
 import Die from "./components/Die";
@@ -9,15 +7,23 @@ import Score from "./components/Score";
 import "./App.css";
 
 function App() {
+  // const [scoreBoard, setScoreBoard] = useState([]);
+  const [scoreBoard, setScoreBoard] = useState(
+    JSON.parse(localStorage.getItem("scoreBoard")) || []
+  );
   const [dice, setDice] = useState(allNewDice());
   const [tenzies, setTensizes] = useState(false);
   const [reRollCounter, setReRollCounter] = useState(0);
   const [timer, setTimer] = useState(0);
-  const [scoreBoard, setScoreBoard] = useState([]);
   const [gameStart, setGameStart] = useState(false);
 
+  // set localStorage
   useEffect(() => {
-    // Timer
+    localStorage.setItem("scoreBoard", JSON.stringify(scoreBoard));
+  }, [scoreBoard]);
+
+  // Timer starts when game starts
+  useEffect(() => {
     let intervalID = null;
     if (gameStart && !tenzies) {
       intervalID = setInterval(() => {
@@ -29,7 +35,7 @@ function App() {
     };
   }, [gameStart, tenzies]);
 
-  console.log(timer);
+  // Checks for player win conditions
   useEffect(() => {
     const allHeld = dice.every((die) => die.isHeld);
     const firstValue = dice[0].value;
@@ -39,14 +45,14 @@ function App() {
     }
   }, [dice]);
 
+  // Starts Game
   function gameStartButton() {
     setGameStart((prevGameStart) => {
       return !prevGameStart;
     });
   }
 
-  console.log(gameStart);
-
+  // Generate new die obj
   function generateNewDie() {
     return {
       value: Math.ceil(Math.random() * 6),
@@ -55,6 +61,7 @@ function App() {
     };
   }
 
+  // Create new score obj
   function createNewScore() {
     const newScore = {
       counter: reRollCounter,
@@ -63,6 +70,7 @@ function App() {
     return newScore;
   }
 
+  // Create 10 new dice obj
   function allNewDice() {
     const newArr = [];
     for (let i = 0; i < 10; i++) {
@@ -71,6 +79,17 @@ function App() {
     return newArr;
   }
 
+  /** rollDice()
+   * re-roll number value of unheld dice
+   * setReRollCounter: count clicks until tenzies
+   *
+   * If player wins Tenzies
+   * setTenzies: reset game status
+   * setDice: reset number value for all dice
+   * setReRollCounter: reset click counter
+   * setTimer: reset timer to 0
+   * setScoreBoard: generate new score and add to scoreBoard
+   */
   function rollDice() {
     if (!tenzies) {
       setDice((oldDice) =>
@@ -88,6 +107,7 @@ function App() {
     }
   }
 
+  // Freeze/hold number value of die when click
   function holdDice(id) {
     setDice((oldDice) =>
       oldDice.map((die) => {
@@ -96,6 +116,7 @@ function App() {
     );
   }
 
+  // Generate Die Component
   const diceElements = dice.map((die) => (
     <Die
       key={die.id}
@@ -106,20 +127,13 @@ function App() {
     />
   ));
 
+  // Generate Score Component and sort in order by time passed
   const scoreElements = scoreBoard
     .sort((a, b) => a.time - b.time)
     .map((score) => <Score key={nanoid()} {...score} />);
 
+  // Reference top score in state `scoreElements`
   const topPlayer = scoreElements[0];
-
-  // TODO: additional features
-  // Change number value to Die image ✔
-  // Tracks number of clicks until player wins ✔
-  // Track time passed in secs until player win ✔
-  // Display a leader board for best time ✔
-  // Create a Start Game page ✔
-  // Save past scores to localStorage
-  // TODO: documentation
 
   return (
     <main>

@@ -11,9 +11,7 @@ function Die(props) {
         className="die-face"
         onClick={props.holdDice}
         data-number={props.value}
-      >
-        {/* <h2 className="die-num">{props.value}</h2> */}
-      </div>
+      ></div>
     </div>
   );
 }
