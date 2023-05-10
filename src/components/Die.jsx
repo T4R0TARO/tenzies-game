@@ -1,17 +1,13 @@
 import React from "react";
 
-function Die(props) {
+function Die({ isHeld, holdDice, value }) {
   const styles = {
-    backgroundColor: props.isHeld ? "#59E391" : "white",
+    backgroundColor: isHeld ? "#59E391" : "white",
   };
 
   return (
     <div className="die-face-container" style={styles}>
-      <div
-        className="die-face"
-        onClick={props.holdDice}
-        data-number={props.value}
-      ></div>
+      <div className="die-face" onClick={holdDice} data-number={value}></div>
     </div>
   );
 }

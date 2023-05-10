@@ -1,3 +1,4 @@
+/* Base Styles */
 #root {
   max-width: 1280px;
   margin: 0 auto;
@@ -29,6 +30,7 @@ p {
   margin-top: 0;
 }
 
+/* Starting Page Stlyes */
 .starting-page-container {
   display: flex;
   justify-content: center;
@@ -48,6 +50,7 @@ p {
   margin-bottom: 20px;
 }
 
+/* Die Styles */
 .die-container {
   display: grid;
   grid-template: auto auto/ repeat(5, 1fr);

@@ -1,10 +1,10 @@
 import React from "react";
 
-function Score(props) {
+function Score({ counter, time }) {
   return (
     <div className="score-container">
       <p>
-        {props.counter} clicks / {props.time} secs
+        {counter} clicks / {time} secs
       </p>
     </div>
   );
